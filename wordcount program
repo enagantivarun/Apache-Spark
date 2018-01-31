@@ -2,45 +2,24 @@
 //Spark shell commands for word count in textfile
 
 
-
 // Copy textfile from localfile system to hdfs
-
-
 hdfs dfs -copyFromLocal /home/edureka/Desktop/Sachin.txt /Test/sample/Sachin.txt
 
-
-
 // Read the textfile into spark
-
-
 val shn_txt_data=spark.read.textFile("hdfs://localhost:9000/Test/sample/Sachin.txt").rdd
 
-
-
 //Apply rdd tranformations
-
-
 val shn_txt_rdd=shn_txt_data.flatMap(line=>line.split(" ")).map(word=>(word,1)).reduceByKey(_+_)
 
-
-
 //Checking the data tranformation
-
-
 val shn_txt_trsfm=shn_txt_rdd.collect()
 
-
-
-
 //Saving the wordcount in hdfs
-
-
 shn_txt_trsfm.saveAsTextFile("hdfs://localhost:9000/Test/sample/sachin_txt_output
 
-
-
-
 //can check the files whether successfully saved to hdfs location
-
-
 hdfs dfs -cat/Test/sample/sachin_txt_output/part-00000
+
+//Copy output file from hdfs to local file system
+hdfs dfs -copyToLocal /Test/sample/sachin_txt_output/part-00000 /home/edureka/Desktop
+
