@@ -15,7 +15,7 @@ val shn_txt_rdd=shn_txt_data.flatMap(line=>line.split(" ")).map(word=>(word,1)).
 val shn_txt_trsfm=shn_txt_rdd.collect()
 
 //Saving the wordcount in hdfs
-shn_txt_trsfm.saveAsTextFile("hdfs://localhost:9000/Test/sample/sachin_txt_output
+shn_txt_trsfm.saveAsTextFile("hdfs://localhost:9000/Test/sample/sachin_txt_output")
 
 //can check the files whether successfully saved to hdfs location
 hdfs dfs -cat/Test/sample/sachin_txt_output/part-00000
