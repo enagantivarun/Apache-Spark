@@ -1,0 +1,57 @@
+
+//Spark shell commands to find the frequent call drops 
+
+
+
+// create a directory to place the .csv in hdfs
+
+hdfs dfs -mkdir /project
+
+
+
+// Copy CDR.csv file from local system to hdfs
+
+hdfs dfs -copyFromLocal/home/edureka/Downloads/CDR.csv /project/CDR.csv
+
+
+// Defining a schema
+
+
+import org.apache.spark.sql.types._
+
+
+val schema=StructType(Array(StructField("LOC",StringType,true),(StructField("DURATION",StringType,true),(StructField("PHONE",StringType,true),(StructField("ERROR",StringType,true)))
+
+
+
+//Read .csv file from hdfs
+
+val CDRDF= spark.read.schema(schema).csv("hdfs://localhost:9000/project/CDR.csv")
+
+
+//Convert the dataframe into temporary view
+
+CDRDF.createOrReplaceTempView("CDR")
+
+
+//Query to obtain results
+
+
+valcustomers = spark.sql("select count(PHONE) AS NUM_TIMES, PHONE from CDR GROUPBY PHONE ORDER BY COUNT(PHONE) DESC LIMIT 10")
+
+
+//query to obtain customer at a  location
+
+val Results = spark.sql("select count(PHONE) AS NUM_TIMES, PHONE, LOC from CDR GROUP BY PHONE,LOC ORDER BY COUNT(PHONE) DESC LIMIT 10")
+
+
+//Show results
+
+customer.show()
+
+results.show()
+
+
+
+
+
